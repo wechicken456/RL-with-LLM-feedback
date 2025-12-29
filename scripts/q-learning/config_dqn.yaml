@@ -1,0 +1,42 @@
+# Command-line arguments can override these values.
+
+total_episodes: 10000
+seed: 1337
+
+# Logging settings
+logger: wandb # Options: tensorboard, wandb, both, console, none
+log_dir: ./logs
+wandb_project_name: rl-llm
+wandb_run_name: dqn-taxi-1
+wandb_entity: null
+record_period: 1000
+log_interval_steps: 400
+
+torch_deterministic: true
+cuda: true
+track: false
+
+# Standard RL hyperparameters
+learning_rate: 0.0003
+buffer_size: 50000
+gamma: 0.995
+tau: 0.005
+target_network_frequency: 500 # in training steps
+batch_size: 128
+epsilon_start: 1.0
+epsilon_end: 0.02
+epsilon_decay: 0.9992
+learning_starts_after_episode: 10
+train_frequency: 4 # in training steps
+updates_per_step: 1
+
+
+# LLM config
+llm_provider: openai
+llm_model: gpt-5-mini
+
+# Reward shaping
+use_reward_shaping: true
+shaping_lambda: 5.0
+llm_query_frequency: 200 # in environment steps
+potential_cache_size: 25000

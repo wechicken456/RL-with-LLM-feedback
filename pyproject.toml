@@ -1,0 +1,17 @@
+[project]
+name = "mygym"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "cleanrl>=0.4.8",
+    "swig==4.1.1",
+    "gymnasium[box2d]==0.29.1",
+    "pyyaml>=6.0.3",
+    "tensorboard>=2.20.0",
+    "torch>=2.9.1",
+    "wandb>=0.23.0",
+    "moviepy>=2.2.1",
+    "openai>=2.14.0",
+]
