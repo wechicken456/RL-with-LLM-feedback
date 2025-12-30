@@ -1,12 +1,9 @@
-# Filename: utils.py
-# Description: Utility functions for Dyna-Q algorithm
-
 import gymnasium as gym
 
 
 def make_env(env_id, seed, run_name, train=True, render_mode="rgb_array", record_period=100) -> gym.Env:
     """
-    Creates and wraps the LunarLander environment.
+    Creates and wraps the environment to record a video of the agent.
     """
     if render_mode:
         env = gym.make(env_id, render_mode=render_mode)
