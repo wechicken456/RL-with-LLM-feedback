@@ -14,4 +14,5 @@ dependencies = [
     "wandb>=0.23.0",
     "moviepy>=2.2.1",
     "openai>=2.14.0",
+    "ollama>=0.6.1",
 ]

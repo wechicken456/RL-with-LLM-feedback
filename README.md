@@ -10,6 +10,26 @@ This project currently uses the following packages:
 Currently, there's only implementation of DQN with the [Taxi-v3](https://gymnasium.farama.org/environments/toy_text/taxi/) environment.
 
 
+# Shaping Rewards
+
+## Definition
+
+Currently, I'm following [Ng et al. (1999)](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/NgHaradaRussell-shaping-ICML1999.pdf) potential-based reward shaping. 
+
+Basically, the shaping reward = ABSOLUTE progress towards the final goal, given ONLY the current state and next state. They proved that this way you speed up training, but **optimal policies** remain the same.
+
+The authors argued that shaping should NOT reflect preference of actions, because by doing so we would be **changing the task** (different objective than environment). 
+
+
+## Querying LLM for shaping rewards during episode
+
+The one I'm currently testing. It's really slow, as expected.
+
+The training loop queries the LLM every 50 steps for a shaping reward, which is incredibly slow. 
+
+## Query LLM only once to provide a shaping reward function definition
+
+Next step is to experiment with this. Ask the LLM before starting the training to provide a shaping reward function definition, then use that function to compute shaping rewards every step (or fewer if we want to) without incurring any extra latency. 
 
 
 
