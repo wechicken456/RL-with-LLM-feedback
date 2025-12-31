@@ -4,11 +4,12 @@ import os
 from pydantic import BaseModel
 from utils import taxi_state_to_text
 from typing import Dict
+from ollama import Client as OllamaClient
 
 load_dotenv()
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
-ALLOWED_PROVIDERS =  ["openai", "gemini"]
+ALLOWED_PROVIDERS =  ["openai", "ollama"]
 
 class LLMStructuredResponse(BaseModel):
     reasoning: str
@@ -23,7 +24,10 @@ class LLM():
         self.client = None
         if provider == "openai":
             self.client = OpenAI(api_key = openai_api_key)
-        self.provider = "openai"
+        elif provider == "ollama":
+            self.client = OllamaClient(os.getenv("OLLAMA_HOST", "http://localhost:11434"))
+        self.provider = provider
+
         self.model = model
         self.system_prompt = system_prompt
     
@@ -31,23 +35,32 @@ class LLM():
         self.system_prompt = system_prompt
 
     def query(self, message: str) -> LLMStructuredResponse | None:
+        messages = [
+            {
+                "role": "system",
+                "content": self.system_prompt,
+            },
+            {
+                "role": "user",
+                "content": message
+            }
+        ]
+
         if self.provider == "openai":
             response = self.client.responses.parse(
                 model = self.model,
-                input = [
-                    {
-                        "role": "system",
-                        "content": self.system_prompt,
-                    },
-                    {
-                        "role": "user",
-                        "content": message
-                    }
-                ],
+                input = messages,
                 text_format=LLMStructuredResponse
             )
             return response.output_parsed
-        
+        elif self.provider == "ollama":
+            response = self.client.chat(
+                self.model, 
+                messages=messages,
+                format=LLMStructuredResponse.model_json_schema()
+            )
+            return LLMStructuredResponse.model_validate_json(response.message.content)
+
 class LLMTaxi:
     def __init__(self, llm: LLM, cache_size: int = 500):
         self.llm = llm

@@ -30,10 +30,9 @@ learning_starts_after_episode: 10
 train_frequency: 4 # in training steps
 updates_per_step: 1
 
-
 # LLM config
-llm_provider: openai
-llm_model: gpt-5-mini
+llm_provider: ollama
+llm_model: qwen3:30b
 
 # Reward shaping
 use_reward_shaping: true
